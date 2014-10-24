@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class AnnonceType extends AbstractType
+class CategorieType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,17 +15,7 @@ class AnnonceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('titre', 'text')
-            ->add('contenu', 'textarea')
-            ->add('published', 'checkbox', array('required' => false))
-            ->add('image' , new ImageType())
-            ->add('categories', 'entity', array(
-                'class'     => 'MakeYourTeamBundle:Categorie',
-                'property'  => 'nom',
-                'multiple'  => false,
-            ))
-            ->add('enregistrer', 'submit')
-
+            ->add('nom', 'text')
         ;
     }
     
@@ -35,7 +25,7 @@ class AnnonceType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'MYT\MakeYourTeamBundle\Entity\Annonce'
+            'data_class' => 'MYT\MakeYourTeamBundle\Entity\Categorie'
         ));
     }
 
@@ -44,6 +34,6 @@ class AnnonceType extends AbstractType
      */
     public function getName()
     {
-        return 'myt_makeyourteambundle_annonce';
+        return 'myt_makeyourteambundle_categorie';
     }
 }
