@@ -1,0 +1,42 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Accueil</title>
+</head>
+<body>
+    <h1>Accueil de mon site</h1>
+
+    <span><a href="{{ path('annonce_add') }}">Ajouter une annonce</a></span>
+
+    <div class="list-annonces">
+        {% for annonce in annonces %}
+            <article>
+                <header>
+                    <h1>{{ annonce.titre }}</h1>
+                    <p>Publié le : {{ annonce.cdate|date('d/m/Y') }} </p>
+                </header>
+                <p>
+                    {# On vérifie qu'une image soit bien associée à l'annonce #}
+                    {% if annonce.image is not null %}
+                        <img src="{{ annonce.image.url }}" alt="{{ annonce.image.alt }}">
+                    {% endif %}
+                    {{ annonce.contenu }}
+                </p>
+
+                {#{% if listCompetenceAnnonce|length > 0 %}#}
+                {#<div>#}
+                    {#Cette annonce requiert les compétences suivantes :#}
+                    {#<ul>#}
+                        {#{% for annonceCompetence in listCompetenceAnnonce %}#}
+                            {#<li>{{ annonceCompetence.competence.nom }} : niveau {{ annonceCompetence.niveau }}</li>#}
+                        {#{% endfor %}#}
+                    {#</ul>#}
+                {#</div>#}
+                {#{% endif %}#}
+            </article>
+            <br/>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

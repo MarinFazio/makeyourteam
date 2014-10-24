@@ -1,0 +1,21 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+</head>
+<body>
+    <article>
+        <header>
+            <h1>{{ article.titre }}</h1>
+            <p>
+                <span>Publié le {{ article.date|date('d/m/Y') }}</span>
+                <span>par {{ article.auteur }}</span>
+            </p>
+        </header>
+        <p>
+            {{ article.contenu }}
+        </p>
+    </article>
+    <a href="{{ path('home') }}">Retour accueil</a>
+</body>
+</html>

@@ -1,0 +1,4 @@
+services:
+#    make_your_team.example:
+#        class: MYT\MakeYourTeamBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

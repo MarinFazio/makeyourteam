@@ -1,0 +1,5 @@
+make_your_team:
+    resource: "@MakeYourTeamBundle/Resources/config/routing.yml"
+    prefix:   /
+
+
