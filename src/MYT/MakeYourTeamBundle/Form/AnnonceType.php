@@ -19,7 +19,7 @@ class AnnonceType extends AbstractType
             ->add('contenu', 'textarea')
             ->add('published', 'checkbox', array('required' => false))
             ->add('image' , new ImageType())
-            ->add('categories', 'entity', array(
+            ->add('categorie', 'entity', array(
                 'class'     => 'MakeYourTeamBundle:Categorie',
                 'property'  => 'nom',
                 'multiple'  => false,

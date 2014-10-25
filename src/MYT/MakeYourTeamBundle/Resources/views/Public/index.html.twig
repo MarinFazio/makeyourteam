@@ -18,7 +18,7 @@
                 <p>
                     {# On vérifie qu'une image soit bien associée à l'annonce #}
                     {% if annonce.image is not null %}
-                        <img src="{{ annonce.image.url }}" alt="{{ annonce.image.alt }}">
+                        <img src="{{ asset(annonce.image.webPath) }}" alt="{{ annonce.image.alt }}"/>
                     {% endif %}
                     {{ annonce.contenu }}
                 </p>

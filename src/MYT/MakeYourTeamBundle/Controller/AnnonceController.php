@@ -28,15 +28,19 @@ class AnnonceController extends Controller
                 $categorieRepository = $em->getRepository("MakeYourTeamBundle:Categorie");
                 $categorie = $categorieRepository->find(1);
 
-                $annonce->addCategory($categorie);
+                $annonce->setCategorie($categorie)->setAuteur('Auteur');
+
+                $d = $form->getData();
+                $a=$form->get('image');
+//                var_dump($a);die;
 
                 //Le persist pour l'image est exécuté en cascade
-                $image = new Image();
-                $image->setUrl('http://sdz-upload.s3.amazonaws.com/prod/upload/job-de-reve.jpg');
-                $image->setAlt('Photo');
+//                $image = new Image();
+//                $image->setUrl('http://sdz-upload.s3.amazonaws.com/prod/upload/job-de-reve.jpg');
+//                $image->setAlt('Photo');
 
-                // On lie l'image à l'annonce
-                $annonce->setImage($image)->setAuteur("auteur");
+//                 On lie l'image à l'annonce
+//                $annonce->setImage($image)->setAuteur("auteur");
 
                 // On récupère toutes les compétences
                 $listCompetence = $em->getRepository('MakeYourTeamBundle:Competence')->findAll();

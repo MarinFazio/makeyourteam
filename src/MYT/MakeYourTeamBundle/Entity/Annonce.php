@@ -38,9 +38,10 @@ class Annonce
     private $contenu;
 
     /**
-     * @ORM\ManyToMany(targetEntity="MYT\MakeYourTeamBundle\Entity\Categorie", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="MYT\MakeYourTeamBundle\Entity\Categorie")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $categories;
+    private $categorie;
 
     /**
      * @var boolean
@@ -50,7 +51,7 @@ class Annonce
     private $published=true;
 
     /**
-     * @ORM\OneToOne(targetEntity="MYT\MakeYourTeamBundle\Entity\Image", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="MYT\MakeYourTeamBundle\Entity\Image", cascade={"persist", "remove"})
      */
     private $image;
 
@@ -238,39 +239,6 @@ class Annonce
     }
 
     /**
-     * Add categories
-     *
-     * @param \MYT\MakeYourTeamBundle\Entity\Categorie $categories
-     * @return Annonce
-     */
-    public function addCategory(Categorie $categories)
-    {
-        $this->categories[] = $categories;
-
-        return $this;
-    }
-
-    /**
-     * Remove categories
-     *
-     * @param \MYT\MakeYourTeamBundle\Entity\Categorie $categories
-     */
-    public function removeCategory(Categorie $categories)
-    {
-        $this->categories->removeElement($categories);
-    }
-
-    /**
-     * Get categories
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getCategories()
-    {
-        return $this->categories;
-    }
-
-    /**
      * @ORM\PreUpdate
      */
     public function updateDate()
@@ -331,5 +299,28 @@ class Annonce
     public function getAuteur()
     {
         return $this->auteur;
+    }
+
+    /**
+     * Set categorie
+     *
+     * @param \MYT\MakeYourTeamBundle\Entity\Categorie $categorie
+     * @return Annonce
+     */
+    public function setCategorie(Categorie $categorie)
+    {
+        $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    /**
+     * Get categorie
+     *
+     * @return \MYT\MakeYourTeamBundle\Entity\Categorie 
+     */
+    public function getCategorie()
+    {
+        return $this->categorie;
     }
 }

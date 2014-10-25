@@ -3,6 +3,7 @@
 namespace MYT\MakeYourTeamBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Image
@@ -35,6 +36,26 @@ class Image
      */
     private $alt;
 
+    private $file;
+
+    private $tempFileName;
+
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+
+        if($this->url !== null){
+            $this->tempFileName = $this->url;
+            $this->url = null;
+            $this->alt = null;
+        }
+    }
 
     /**
      * Get id
@@ -91,4 +112,70 @@ class Image
     {
         return $this->alt;
     }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        if($this->file === null){
+            return;
+        }
+        $this->url = $this->file->guessExtension();
+        $this->alt = $this->file->getClientOriginalName();
+    }
+
+    public function upload()
+    {
+        if($this->file === null){
+            return;
+        }
+        if($this->tempFileName !== null){
+            $oldFile = $this->getUploadRootDir().'/'.$this->id.'.'.$this->tempFileName;
+            if(file_exists($oldFile)){
+                unlink($oldFile);
+            }
+        }
+
+        $this->file->move(
+            $this->getUploadRootDir(),
+            $this->id.'.'.$this->url
+        );
+    }
+
+    /**
+     * @ORM\PreRemove()
+     */
+    public function preRemoveUpload()
+    {
+        $this->tempFileName = $this->getUploadRootDir().'/'.$this->id.'.'.$this->url;
+    }
+
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+        if (file_exists($this->tempFileName)) {
+            unlink($this->tempFileName);
+        }
+    }
+
+    public function getUploadDir()
+    {
+        return 'uploads/img';
+    }
+
+    protected function getUploadRootDir()
+    {
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    public function getWebPath()
+    {
+        return $this->getUploadDir().'/'.$this->getId().'.'.$this->getUrl();
+    }
+
 }

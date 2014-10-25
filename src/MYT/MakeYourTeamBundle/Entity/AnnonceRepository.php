@@ -16,10 +16,27 @@ class AnnonceRepository extends EntityRepository
     public function getAnnonceByCategorie(array $catagories)
     {
         $qb = $this->createQueryBuilder('a');
-        $qb->join('a.categories', 'c')->addSelect('c');
+        $qb->join('a.categorie', 'c')->addSelect('c');
         $qb->where($qb->expr()->in('c.nom', $catagories));
 
         return $qb->getQuery()->getResult();
     }
+
+
+//    public function getPublishedQueryBuilder()
+//    {
+//        return $this->createQueryBuilder('a')
+//            ->where('a.published = :published')
+//            ->setParameter('published', true)
+//            ;
+//    }
+
+    //Ajouter dans un XxxType
+//    $builder->add('advert', 'entity', array(
+//    'class'         => 'MakeYourTeamBundle:Annonce',
+//    'property'      => 'title',
+//    'query_builder' => function(AnnonceRepository $repo) {
+//        return $repo->getPublishedQueryBuilder();
+//}
 
 }
