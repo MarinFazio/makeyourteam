@@ -15,3 +15,11 @@ annonce_article:
 annonce_add:
     pattern: /annonce/add
     defaults: { _controller: MakeYourTeamBundle:Annonce:add }
+
+annonce_edit:
+    pattern: /annonce/edit/{slug}
+    defaults: { _controller:MakeYourTeamBundle:Annonce:edit }
+
+annonce_delete:
+    pattern: /annonce/delete/{id}
+    defaults: { _controller:MakeYourTeamBundle:Annonce:delete }

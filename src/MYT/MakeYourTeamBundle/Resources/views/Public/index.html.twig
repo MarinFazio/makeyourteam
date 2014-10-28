@@ -22,6 +22,10 @@
                     {% endif %}
                     {{ annonce.contenu }}
                 </p>
+                <span>
+                    <a href="{{ path('annonce_edit', {'slug': annonce.slug}) }}">Modifier</a>
+                    <a href="{{ path('annonce_delete', {'id': annonce.id}) }}">Supprimer</a>
+                </span>
 
                 {#{% if listCompetenceAnnonce|length > 0 %}#}
                 {#<div>#}

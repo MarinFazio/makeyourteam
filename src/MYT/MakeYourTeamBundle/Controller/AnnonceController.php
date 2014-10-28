@@ -9,6 +9,7 @@ use MYT\MakeYourTeamBundle\Entity\Image;
 use MYT\MakeYourTeamBundle\Form\AnnonceType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AnnonceController extends Controller
 {
@@ -17,7 +18,6 @@ class AnnonceController extends Controller
     {
         $annonce = new Annonce();
         $form = $this->createForm(new AnnonceType(), $annonce);
-
 
         $_request = $this->getRequest();
         if($_request->getMethod() == 'POST'){
@@ -67,11 +67,61 @@ class AnnonceController extends Controller
         ));
     }
 
-    public function editAction($annonce_id)
+    public function editAction($slug, Request $request)
     {
-        $annonce = $this->getDoctrine()->getManager()->getRepository('MakeYourTeamBundle:Annonce')->find($annonce_id);
-        $formBuilder = $this->get('form.factory')->createBuilder('form', $annonce);
+        $em = $this->getDoctrine()->getManager();
+        $annonceRepository = $em->getRepository('MakeYourTeamBundle:Annonce');
+        $annonce = $annonceRepository->findOneBySlug($slug);
+        if($annonce === null){
+            throw new NotFoundHttpException("L'annonce de slug $slug n'existe pas");
+        }
 
+        $form = $this->createForm(new AnnonceType(), $annonce);
+        $form->handleRequest($request);
+        if($form->isValid()){
+
+            $image = $form->getData()->getImage();
+            $image->preUpload();
+
+            $em->flush();
+            $image->upload();
+
+            $request->getSession()->getFlashBag()->add('notice', 'Annonce bien modifiée.');
+
+            return $this->redirect($this->generateUrl('home'));
+        }
+        return $this->render("MakeYourTeamBundle:Annonce:edit.html.twig", array(
+            'form' => $form->createView(),
+        ));
+    }
+
+    public function deleteAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $annonce = $em->getRepository('MakeYourTeamBundle:Annonce')->find($id);
+
+        $form = $this->createFormBuilder()->getForm();
+        $form->handleRequest($request);
+        if($form->isValid()){
+            $annonceCompetences = $em->getRepository('MakeYourTeamBundle:AnnonceCompetence')->findByAnnonce($annonce);
+            foreach($annonceCompetences as $a){
+                $em->remove($a);
+            }
+
+            $annonce->getImage()->preRemoveUpload();
+            $em->remove($annonce);
+            $em->flush();
+            $annonce->getImage()->removeUpload();
+
+            $request->getSession()->getFlashBag()->add('info', "L'annonce a bien été supprimée.");
+
+            return $this->redirect($this->generateUrl('home'));
+        }
+        // Si la requête est en GET, on affiche une page de confirmation avant de supprimer
+        return $this->render('MakeYourTeamBundle:Annonce:delete.html.twig', array(
+            'annonce' => $annonce,
+            'form'    => $form->createView()
+        ));
     }
 
     public function pageAction($page)

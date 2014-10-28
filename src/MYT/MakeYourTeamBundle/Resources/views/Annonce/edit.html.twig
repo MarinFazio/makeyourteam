@@ -1,0 +1,79 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Modifier une annonce{% endblock %}
+
+{% block stylesheets %}
+    {% stylesheets
+    '@MakeYourTeamBundle/Resources/public/css/bootstrap/*'
+    '@MakeYourTeamBundle/Resources/public/css/perso/form_style.css'
+    filter= 'cssrewrite'%}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block body %}
+    <h1>Modifier article</h1>
+
+    <div class="formulaire">
+        {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+        {# Les erreurs générales du formulaire #}
+        {{ form_errors(form) }}
+
+        <div class="form-group form-field">
+            <div class="col-sm-3">
+                {{ form_label(form.titre, 'Titre de l\'annonce', {'label_attr': {'class': 'control-label form-label'}}) }}
+                {{ form_errors(form.titre) }}
+            </div>
+            <div class="col-sm-4">
+                {{ form_widget(form.titre, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group form-field">
+            <div class="col-sm-3">
+                {{ form_label(form.contenu, 'Contenu de l\'annonce', {'label_attr': {'class': 'control-label form-label'}}) }}
+                {{ form_errors(form.contenu) }}
+            </div>
+            <div class="col-sm-4">
+                {{ form_widget(form.contenu, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group form-field">
+            <div class="col-sm-3">
+                {{ form_label(form.published, 'Publication de l\'annonce', {'label_attr': {'class': 'control-label form-label'}}) }}
+                {{ form_errors(form.published) }}
+            </div>
+            <div class="col-sm-4">
+                {{ form_widget(form.published, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group form-field">
+            <div class="col-sm-3">
+                {{ form_label(form.image, 'Image', {'label_attr': {'class': 'control-label form-label'}}) }}
+                {{ form_errors(form.image) }}
+            </div>
+            <div class="col-sm-4">
+                {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group form-field">
+            <div class="col-sm-3">
+                {{ form_label(form.categorie, 'Catégorie de l\'annonce', {'label_attr': {'class': 'control-label form-label'}}) }}
+                {{ form_errors(form.categorie) }}
+            </div>
+            <div class="col-sm-4">
+                {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        {{ form_widget(form.enregistrer, {'attr': {'class': 'btn btn-primary'}}) }}
+
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
