@@ -13,12 +13,12 @@
             <article>
                 <header>
                     <h1>{{ annonce.titre }}</h1>
-                    <p>Publié le : {{ annonce.cdate|date('d/m/Y') }} </p>
+                    <p>Publié le : {{ annonce.cdate|date('d/m/Y') }}, par {{ annonce.auteur }} </p>
                 </header>
                 <p>
                     {# On vérifie qu'une image soit bien associée à l'annonce #}
                     {% if annonce.image is not null %}
-                        <img src="{{ asset(annonce.image.webPath) }}" alt="{{ annonce.image.alt }}"/>
+                        <img src="{{ asset(annonce.image.webPath) }}" alt="{{ annonce.image.alt }}" height="150"/>
                     {% endif %}
                     {{ annonce.contenu }}
                 </p>

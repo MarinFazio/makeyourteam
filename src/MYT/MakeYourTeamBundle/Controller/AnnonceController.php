@@ -2,6 +2,7 @@
 
 namespace MYT\MakeYourTeamBundle\Controller;
 
+use Doctrine\Common\Util\Debug;
 use MYT\MakeYourTeamBundle\Entity\Annonce;
 use MYT\MakeYourTeamBundle\Entity\AnnonceCompetence;
 use MYT\MakeYourTeamBundle\Entity\Image;
@@ -25,22 +26,16 @@ class AnnonceController extends Controller
             if($form->isValid()){
                 $em = $this->getDoctrine()->getManager();
 
-                $categorieRepository = $em->getRepository("MakeYourTeamBundle:Categorie");
-                $categorie = $categorieRepository->find(1);
+//                $categorieRepository = $em->getRepository("MakeYourTeamBundle:Categorie");
+                $categorie = $form->get('categorie')->getData();
 
                 $annonce->setCategorie($categorie)->setAuteur('Auteur');
 
-                $d = $form->getData();
-                $a=$form->get('image');
-//                var_dump($a);die;
-
+                $image = $form->getData()->getImage();
+                $image->preUpload();
                 //Le persist pour l'image est exécuté en cascade
-//                $image = new Image();
-//                $image->setUrl('http://sdz-upload.s3.amazonaws.com/prod/upload/job-de-reve.jpg');
-//                $image->setAlt('Photo');
 
-//                 On lie l'image à l'annonce
-//                $annonce->setImage($image)->setAuteur("auteur");
+                $annonce->setAuteur("auteur");
 
                 // On récupère toutes les compétences
                 $listCompetence = $em->getRepository('MakeYourTeamBundle:Competence')->findAll();
@@ -58,6 +53,8 @@ class AnnonceController extends Controller
                 }
                 $em->persist($annonce);
                 $em->flush();
+
+                $image->upload();
 
                 $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
 

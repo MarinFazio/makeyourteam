@@ -46,7 +46,7 @@ class Image
         return $this->file;
     }
 
-    public function setFile(UploadedFile $file = null)
+    public function setFile(UploadedFile $file)
     {
         $this->file = $file;
 
@@ -122,10 +122,14 @@ class Image
         if($this->file === null){
             return;
         }
-        $this->url = $this->file->guessExtension();
-        $this->alt = $this->file->getClientOriginalName();
+        $this->alt = $this->file->guessExtension();
+        $this->url = $this->file->getClientOriginalName();
     }
 
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
     public function upload()
     {
         if($this->file === null){
