@@ -4,6 +4,7 @@ namespace MYT\MakeYourTeamBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Annonce
@@ -27,6 +28,7 @@ class Annonce
      * @var string
      *
      * @ORM\Column(name="titre", type="string", length=255)
+     * @Assert\Length(min=4,message="Le titre doit faire au moins {{ limit }} caractères.")
      */
     private $titre;
 
@@ -34,6 +36,7 @@ class Annonce
      * @var string
      *
      * @ORM\Column(name="contenu", type="text")
+     * @Assert\NotBlank()
      */
     private $contenu;
 
@@ -52,6 +55,7 @@ class Annonce
 
     /**
      * @ORM\OneToOne(targetEntity="MYT\MakeYourTeamBundle\Entity\Image", cascade={"persist", "remove"})
+     * @Assert\Valid()
      */
     private $image;
 
@@ -66,6 +70,7 @@ class Annonce
      * @var \DateTime
      *
      * @ORM\Column(name="mdate", type="datetime")
+     * @Assert\DateTime()
      */
     private $mdate;
 
